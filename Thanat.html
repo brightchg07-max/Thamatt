@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanat Matkhaw - Athlete Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           1. CSS MASTER STYLES & LAYERS
+           ========================================================================== */
+        :root {
+            --primary: #0f172a;        /* Dark Slate Blue */
+            --primary-light: #1e293b;  /* Lighter Slate */
+            --accent-green: #10b981;   /* Emerald Green */
+            --accent-cyan: #06b6d4;    /* Electric Cyan */
+            --accent-amber: #f59e0b;   /* Warm Gold */
+            --bg-main: #f1f5f9;       /* Light Gray Background */
+            --card-bg: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+            --shadow-glow: 0 0 20px rgba(16, 185, 129, 0.25);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding-bottom: 40px;
+        }
+
+        /* Top Sticky Navbar Layer */
+        .header-layer {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 12px 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-container {
+            max-width: 850px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            color: #94a3b8;
+            background: transparent;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-btn:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-btn.active {
+            color: #ffffff;
+            background: linear-gradient(135deg, var(--accent-green), #059669);
+            box-shadow: var(--shadow-glow);
+        }
+
+        /* Single Page Application View Controller */
+        .page-view {
+            display: none;
+            max-width: 850px;
+            margin: 30px auto;
+            padding: 0 20px;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .page-view.active-view {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Profile & Hero Layer */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: #ffffff;
+            padding: 40px 20px;
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 30px;
+        }
+
+        .avatar-glow-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .profile-img {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #ffffff;
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.4);
+        }
+
+        .status-badge {
+            position: absolute;
+            bottom: 5px;
+            right: 0;
+            background: var(--accent-green);
+            color: #ffffff;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 2px solid var(--primary);
+        }
+
+        /* Info Grid */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .info-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .card-icon {
+            font-size: 1.8rem;
+            background: #f1f5f9;
+            padding: 10px;
+            border-radius: 12px;
+        }
+
+        .info-label { font-size: 0.85rem; color: var(--text-muted); }
+        .info-value { font-size: 1.05rem; font-weight: 600; color: var(--primary); }
+
+        /* API Widgets */
+        .api-widget-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .widget-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .widget-badge {
+            background: var(--primary);
+            color: #ffffff;
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+        .badge-cyan { background: var(--accent-cyan); }
+        .badge-amber { background: var(--accent-amber); }
+
+        .quote-box {
+            background: #f8fafc;
+            border-left: 4px solid var(--accent-green);
+            padding: 18px;
+            border-radius: 12px;
+        }
+
+        .advice-box {
+            text-align: center;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            padding: 20px;
+            border-radius: 16px;
+        }
+
+        .refresh-btn {
+            background: var(--accent-green);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: inherit;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .weather-box {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            padding: 20px;
+            border-radius: 16px;
+        }
+
+        .weather-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            text-align: center;
+        }
+
+        /* Content Cards & Tables */
+        .content-block {
+            background: var(--card-bg);
+            padding: 28px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 30px;
+        }
+
+        .section-heading {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 10px;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .skill-item-card {
+            background: #f8fafc;
+            padding: 16px;
+            border-radius: 14px;
+            display: flex;
+            gap: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .career-timeline { display: flex; flex-direction: column; gap: 16px; }
+        .career-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: #f8fafc;
+            padding: 18px;
+            border-radius: 16px;
+            border-left: 5px solid var(--accent-green);
+        }
+
+        .rank-badge {
+            font-size: 1.3rem;
+            font-weight: 700;
+            background: #fff;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Media Video */
+        .video-wrapper video {
+            width: 100%;
+            max-width: 550px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Modern Table */
+        .table-responsive { overflow-x: auto; }
+        .modern-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+        .modern-table th { background: var(--primary); color: #fff; padding: 14px; text-align: left; }
+        .modern-table td { padding: 16px; border-bottom: 1px solid var(--border-color); background: #fff; }
+        .time-badge { background: #0284c7; color: #fff; font-size: 0.8rem; padding: 3px 10px; border-radius: 12px; }
+
+        /* Action Footer Buttons */
+        .action-footer {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px dashed #cbd5e1;
+        }
+
+        .action-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-family: inherit;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover { background: var(--accent-green); }
+
+        @media (max-width: 600px) {
+            .nav-btn { padding: 8px 12px; font-size: 0.85rem; }
+            .action-footer { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-layer">
+        <nav class="nav-container">
+            <button class="nav-btn active" onclick="switchTab('page1')">👤 หน้าแรก (ประวัติ)</button>
+            <button class="nav-btn" onclick="switchTab('page2')">⚡ ทักษะ & อาชีพ</button>
+            <button class="nav-btn" onclick="switchTab('page3')">⚽ ตารางซ้อมบอล</button>
+        </nav>
+    </header>
+
+    <div id="page1" class="page-view active-view">
+        <section class="hero-section">
+            <div class="avatar-glow-wrapper">
+                <img src="https://img1.pic.in.th/images/Tang.md.jpg" alt="Thanat Matkhaw" class="profile-img">
+                <span class="status-badge">⚽ Athlete</span>
+            </div>
+            <h1 style="font-size: 2rem;">Thanat Matkhaw</h1>
+            <p style="color: #cbd5e1;">นักเรียน / นักฟุตบอล | วิทยาลัยเทคนิคเชียงใหม่</p>
+        </section>
+
+        <section class="info-grid">
+            <div class="info-card">
+                <div class="card-icon">🎂</div>
+                <div>
+                    <span class="info-label">วัน/เดือน/ปี เกิด</span>
+                    <p class="info-value">09 / 06 / 2552</p>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="card-icon">⚡</div>
+                <div>
+                    <span class="info-label">อายุ</span>
+                    <p class="info-value">17 ปี (Years Old)</p>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="card-icon">🎓</div>
+                <div>
+                    <span class="info-label">การศึกษา</span>
+                    <p class="info-value">วิทยาลัยเทคนิคเชียงใหม่</p>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="card-icon">🔥</div>
+                <div>
+                    <span class="info-label">สิ่งที่ชอบ</span>
+                    <p class="info-value">ฟุตบอล (Football)</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="api-widget-card">
+            <div class="widget-header">
+                <span class="widget-badge">API #1 ( Quotable API )</span>
+                <h3>💬 คำคมสร้างแรงบันดาลใจนักกีฬา</h3>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 12px;">ดึงคำคมสร้างกำลังใจสปอร์ตระดับโลกแบบ Real-time</p>
+            <div class="quote-box">
+                <blockquote id="quote-text">"กำลังโหลดคำคม..."</blockquote>
+                <p id="quote-author" style="color: var(--accent-green); text-align: right; font-weight: 600; margin-top: 5px;"></p>
+            </div>
+        </section>
+
+        <section class="content-block" style="text-align: center;">
+            <h2 class="section-heading">🎥 วิดีโอแนะนำ & ไฮไลท์การซ้อมบอล</h2>
+            <div class="video-wrapper">
+                <video controls poster="https://img1.pic.in.th/images/Tang.md.jpg">
+                    <source src="Lamine Yamal.mp4" type="video/mp4">
+                    เบราว์เซอร์ไม่รองรับเล่นวิดีโอ
+                </video>
+            </div>
+        </section>
+
+        <footer class="action-footer">
+            <div></div>
+            <button class="action-btn" onclick="switchTab('page2')">ไปหน้า 2 (ทักษะ & อาชีพ) →</button>
+        </footer>
+    </div>
+
+    <div id="page2" class="page-view">
+        <div style="text-align: center; margin-bottom: 25px;">
+            <h1 style="color: var(--primary);">Skills & Careers</h1>
+            <p style="color: var(--text-muted);">ทักษะที่มุ่งมั่นพัฒนา และเป้าหมายอาชีพในอนาคต</p>
+        </div>
+
+        <section class="api-widget-card">
+            <div class="widget-header">
+                <span class="widget-badge badge-cyan">API #2 ( Advice Slip API )</span>
+                <h3>💡 ทริคและคำแนะนำประจำวัน</h3>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 12px;">ระบบสุ่มข้อคิดและคำแนะนำในการพัฒนาทักษะชีวิตประจำวัน</p>
+            <div class="advice-box">
+                <p id="advice-text" style="font-size: 1.1rem; font-weight: 600; color: #166534;">กำลังโหลดคำแนะนำ...</p>
+                <button class="refresh-btn" onclick="fetchAdvice()">🔄 สุ่มคำแนะนำใหม่</button>
+            </div>
+        </section>
+
+        <section class="content-block">
+            <h2 class="section-heading">🏃‍♂️ ทักษะด้านร่างกายที่ต้องการพัฒนา</h2>
+            <div class="skills-grid">
+                <div class="skill-item-card">
+                    <div style="font-size: 1.5rem;">🫀</div>
+                    <div>
+                        <h4>Cardiovascular Endurance</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);">ความอึดและความทนทาน เพื่อให้วิ่งได้เต็มที่ตลอด 90 นาที</p>
+                    </div>
+                </div>
+                <div class="skill-item-card">
+                    <div style="font-size: 1.5rem;">⚡</div>
+                    <div>
+                        <h4>Speed & Acceleration</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);">ความเร็วและการเร่งสปีดระยะสั้น ในการกระชากบอลหนีกองหลัง</p>
+                    </div>
+                </div>
+                <div class="skill-item-card">
+                    <div style="font-size: 1.5rem;">🔄</div>
+                    <div>
+                        <h4>Agility & Balance</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);">ความคล่องตัวและการทรงตัว เปลี่ยนทิศทางหลบหลีกได้อย่างรวดเร็ว</p>
+                    </div>
+                </div>
+                <div class="skill-item-card">
+                    <div style="font-size: 1.5rem;">🏋️</div>
+                    <div>
+                        <h4>Core Strength</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);">ความแข็งแกร่งของกล้ามเนื้อแกนกลาง สำหรับการปะทะบังบอล</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-block">
+            <h2 class="section-heading">🎯 ลำดับอาชีพที่มุ่งหวัง</h2>
+            <div class="career-timeline">
+                <div class="career-card">
+                    <div class="rank-badge">1</div>
+                    <div>
+                        <h3>Professional Footballer</h3>
+                        <p style="font-size: 0.88rem; color: var(--text-muted);">นักฟุตบอลอาชีพในลีกชั้นนำ เล่นให้กับสโมสรและทีมชาติ</p>
+                    </div>
+                </div>
+                <div class="career-card" style="border-left-color: var(--accent-cyan);">
+                    <div class="rank-badge">2</div>
+                    <div>
+                        <h3>Football Coach / Trainer</h3>
+                        <p style="font-size: 0.88rem; color: var(--text-muted);">โค้ชผู้ฝึกสอนฟุตบอล นำความรู้ถ่ายทอดให้เยาวชนรุ่นใหม่</p>
+                    </div>
+                </div>
+                <div class="career-card" style="border-left-color: var(--accent-amber);">
+                    <div class="rank-badge">3</div>
+                    <div>
+                        <h3>Sports Scientist</h3>
+                        <p style="font-size: 0.88rem; color: var(--text-muted);">นักวิทยาศาสตร์การกีฬา ยกระดับศักยภาพร่างกายนักกีฬา</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="action-footer">
+            <button class="action-btn" onclick="switchTab('page1')">← กลับไปหน้าแรก</button>
+            <button class="action-btn" onclick="switchTab('page3')">ไปหน้า 3 (ตารางซ้อม) →</button>
+        </footer>
+    </div>
+
+    <div id="page3" class="page-view">
+        <div style="text-align: center; margin-bottom: 25px;">
+            <h1 style="color: var(--primary);">Football Schedule</h1>
+            <p style="color: var(--text-muted);">ตารางการฝึกซ้อมฟุตบอลประจำสัปดาห์</p>
+        </div>
+
+        <section class="api-widget-card">
+            <div class="widget-header">
+                <span class="widget-badge badge-amber">API #3 ( Open-Meteo Weather API )</span>
+                <h3>🌤️ เช็กสภาพอากาศสนามซ้อมสด (เชียงใหม่)</h3>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 12px;">ดึงข้อมูลพยากรณ์อุณหภูมิและความเร็วลมแบบ Real-time</p>
+            <div id="weather-display" class="weather-box">
+                <p style="text-align: center; color: var(--text-muted);">กำลังดึงข้อมูลสภาพอากาศ...</p>
+            </div>
+        </section>
+
+        <section class="content-block">
+            <h2 class="section-heading">📅 ตารางฝึกซ้อมประจำสัปดาห์</h2>
+            <div class="table-responsive">
+                <table class="modern-table">
+                    <thead>
+                        <tr>
+                            <th>วัน / เวลา</th>
+                            <th>โปรแกรมการฝึกซ้อม</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>วันจันทร์</strong><br><span class="time-badge">16:30 - 18:30 น.</span></td>
+                            <td><strong>Cardio & Fitness:</strong> วิ่งเรียกแรง ยืดกล้ามเนื้อ และสร้างความฟิตร่างกาย</td>
+                        </tr>
+                        <tr>
+                            <td><strong>วันอังคาร</strong><br><span class="time-badge">16:30 - 18:30 น.</span></td>
+                            <td><strong>Ball Control:</strong> ฝึกจับบอล แปบอลสั้น-ยาว และเลี้ยงบอลหลบสิ่งกีดขวาง</td>
+                        </tr>
+                        <tr>
+                            <td><strong>วันพุธ</strong><br><span class="time-badge">16:30 - 18:30 น.</span></td>
+                            <td><strong>Tactics & Positioning:</strong> แทกติกเกมรุก-รับ การยืนตำแหน่ง และทำประตู</td>
+                        </tr>
+                        <tr>
+                            <td><strong>วันพฤหัสบดี</strong><br><span class="time-badge">16:30 - 18:30 น.</span></td>
+                            <td><strong>Set Pieces:</strong> ซ้อมจุดโทษ ฟรีคิก และการเปิดลูกเตะมุม</td>
+                        </tr>
+                        <tr>
+                            <td><strong>วันศุกร์</strong><br><span class="time-badge" style="background:#d97706;">16:30 - 19:00 น.</span></td>
+                            <td><strong>Match Day:</strong> แบ่งทีมลงสนามซ้อมใหญ่ (Scrimmage) ทดสอบระบบทีม</td>
+                        </tr>
+                        <tr>
+                            <td><strong>วันเสาร์ - อาทิตย์</strong><br><span class="time-badge" style="background:#64748b;">วันพักผ่อน</span></td>
+                            <td><strong>Rest & Recovery:</strong> พักผ่อนฟื้นฟูกล้ามเนื้อ หรือชมแมตช์การแข่งขัน</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer class="action-footer">
+            <button class="action-btn" onclick="switchTab('page1')">← กลับไปหน้าแรก</button>
+            <button class="action-btn" onclick="switchTab('page2')">← กลับไปหน้า 2</button>
+        </footer>
+    </div>
+
+    <script>
+        // Tab Navigation Function
+        function switchTab(pageId) {
+            document.querySelectorAll('.page-view').forEach(page => page.classList.remove('active-view'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(pageId).classList.add('active-view');
+            
+            const btnIndex = pageId === 'page1' ? 0 : pageId === 'page2' ? 1 : 2;
+            document.querySelectorAll('.nav-btn')[btnIndex].classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // API 1: Quotable API
+        async function fetchQuote() {
+            try {
+                const response = await fetch('https://api.quotable.io/random?tags=sports|inspirational|wisdom');
+                const data = await response.json();
+                document.getElementById('quote-text').innerText = `"${data.content}"`;
+                document.getElementById('quote-author').innerText = `— ${data.author}`;
+            } catch (error) {
+                document.getElementById('quote-text').innerText = '"Hard work beats talent when talent fails to work hard."';
+                document.getElementById('quote-author').innerText = '— Tim Notke';
+            }
+        }
+
+        // API 2: Advice Slip API
+        async function fetchAdvice() {
+            try {
+                const response = await fetch('https://api.adviceslip.com/advice');
+                const data = await response.json();
+                document.getElementById('advice-text').innerText = `"${data.slip.advice}"`;
+            } catch (error) {
+                document.getElementById('advice-text').innerText = '"Stay hydrated and keep training every day!"';
+            }
+        }
+
+        // API 3: Open-Meteo Weather API (Chiang Mai)
+        async function fetchWeather() {
+            try {
+                const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=18.7883&longitude=98.9853&current_weather=true');
+                const data = await response.json();
+                const temp = data.current_weather.temperature;
+                const wind = data.current_weather.windspeed;
+                
+                document.getElementById('weather-display').innerHTML = `
+                    <div class="weather-grid">
+                        <div>
+                            <span style="font-size:0.85rem; color:var(--text-muted);">📍 พิกัด</span><br>
+                            <strong>เชียงใหม่</strong>
+                        </div>
+                        <div>
+                            <span style="font-size:0.85rem; color:var(--text-muted);">🌡️ อุณหภูมิ</span><br>
+                            <strong style="color:#0284c7; font-size:1.2rem;">${temp} °C</strong>
+                        </div>
+                        <div>
+                            <span style="font-size:0.85rem; color:var(--text-muted);">💨 ความเร็วลม</span><br>
+                            <strong>${wind} km/h</strong>
+                        </div>
+                        <div>
+                            <span style="font-size:0.85rem; color:var(--text-muted);">⚽ สถานะสนาม</span><br>
+                            <strong style="color:var(--accent-green);">พร้อมซ้อม!</strong>
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                document.getElementById('weather-display').innerText = 'ไม่สามารถดึงข้อมูลสภาพอากาศได้ในขณะนี้';
+            }
+        }
+
+        // Run APIs on Page Load
+        fetchQuote();
+        fetchAdvice();
+        fetchWeather();
+    </script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แนะนำตัวเอง - Thanat Matkhaw</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="header-layer">
+        <nav class="nav-container">
+            <a href="index.html" class="nav-btn active">
+                <span class="nav-icon">👤</span> หน้าแรก (ประวัติ)
+            </a>
+            <a href="page2.html" class="nav-btn">
+                <span class="nav-icon">⚡</span> ทักษะ & อาชีพ
+            </a>
+            <a href="page3.html" class="nav-btn">
+                <span class="nav-icon">⚽</span> ตารางซ้อมบอล
+            </a>
+        </nav>
+    </header>
+
+    <main class="page-container">
+        
+        <section class="hero-section">
+            <div class="avatar-glow-wrapper">
+                <img src="https://img1.pic.in.th/images/Tang.md.jpg" alt="Thanat Matkhaw" class="profile-img">
+                <span class="status-badge">⚽ Athlete</span>
+            </div>
+            <h1 class="hero-title">Thanat Matkhaw</h1>
+            <p class="hero-subtitle">นักเรียน / นักฟุตบอล | วิทยาลัยเทคนิคเชียงใหม่</p>
+        </section>
+        
+        <section class="info-grid">
+            <div class="info-card">
+                <div class="card-icon">🎂</div>
+                <div class="card-content">
+                    <span class="info-label">วัน/เดือน/ปี เกิด</span>
+                    <p class="info-value">09 / 06 / 2552</p>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="card-icon">⚡</div>
+                <div class="card-content">
+                    <span class="info-label">อายุ</span>
+                    <p class="info-value">17 ปี (Years Old)</p>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="card-icon">🎓</div>
+                <div class="card-content">
+                    <span class="info-label">การศึกษา</span>
+                    <p class="info-value">วิทยาลัยเทคนิคเชียงใหม่</p>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="card-icon">🔥</div>
+                <div class="card-content">
+                    <span class="info-label">สิ่งที่ชอบ</span>
+                    <p class="info-value">ฟุตบอล (Football)</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="api-widget-card quote-theme">
+            <div class="widget-header">
+                <span class="widget-badge">API Integration #1</span>
+                <h3>💬 คำคมสร้างแรงบันดาลใจนักกีฬา (Quotable API)</h3>
+            </div>
+            <p class="widget-desc">ดึงข้อมูลคำคมสร้างแรงบันดาลใจจากสปอร์ตระดับโลกแบบ Real-time</p>
+            <div class="quote-box">
+                <blockquote id="quote-text">"กำลังโหลดคำคมสร้างพลังแรงบันดาลใจ..."</blockquote>
+                <div id="quote-author" class="quote-author"></div>
+            </div>
+        </section>
+
+        <section class="media-section">
+            <div class="section-title-box">
+                <h2>🎥 วิดีโอแนะนำ & ไฮไลท์การซ้อมบอล</h2>
+            </div>
+            <div class="video-card">
+                <div class="video-wrapper">
+                    <video controls poster="https://img1.pic.in.th/images/Tang.md.jpg">
+                        <source src="วิดีโอ2.mp4" type="video/mp4">
+                        เบราว์เซอร์ของคุณไม่รองรับการเล่นวิดีโอนี้
+                    </video>
+                </div>
+            </div>
+        </section>
+
+        <footer class="action-footer">
+            <a href="page2.html" class="action-btn primary-btn">
+                ไปหน้า 2 (ทักษะ & อาชีพ) <span class="btn-arrow">→</span>
+            </a>
+            <a href="page3.html" class="action-btn secondary-btn">
+                ไปหน้า 3 (ตารางซ้อม) <span class="btn-arrow">→</span>
+            </a>
+        </footer>
+
+    </main>
+
+    <script>
+        async function fetchQuote() {
+            try {
+                const response = await fetch('https://api.quotable.io/random?tags=sports|inspirational|wisdom');
+                const data = await response.json();
+                document.getElementById('quote-text').innerText = `"${data.content}"`;
+                document.getElementById('quote-author').innerText = `— ${data.author}`;
+            } catch (error) {
+                document.getElementById('quote-text').innerText = '"Hard work beats talent when talent fails to work hard."';
+                document.getElementById('quote-author').innerText = '— Tim Notke';
+            }
+        }
+        fetchQuote();
+    </script>
+</body>
+</html>
